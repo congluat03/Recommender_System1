@@ -46,7 +46,7 @@ def display_recommended_hotels(recommended_hotels, cols=5):
                 hotel = recommended_hotels.iloc[i + j]
                 with col:   
                     st.write(hotel['Hotel_Name']) 
-                    st.write('Điểm số đánh giá: 'hotel['Cosine_Similarity'])   
+                    st.write('Điểm số đánh giá: ', hotel['Cosine_Similarity'])   
                     expander = st.expander(f"Mô tả khách sạn")
                     hotel_description = hotel['Hotel_Description']
                     truncated_description = ' '.join(hotel_description.split()[:100]) + '...'
