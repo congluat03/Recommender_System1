@@ -36,7 +36,7 @@ def get_recommendations(df, hotel_id, cosine_sim, nums=5):
     recommended_hotels = df.iloc[hotel_indices].copy()
 
     # Add a new column 'Score' to the DataFrame to include the rating score
-    recommended_hotels['Similarity_Score'] = [sim[1] for sim in sim_scores]
+    recommended_hotels['EstimateScore'] = [sim[1] for sim in sim_scores]
     # Return the top n most similar hotels as a DataFrame
     return recommended_hotels
 
@@ -49,7 +49,7 @@ def display_recommended_hotels(recommended_hotels, cols=5):
                 hotel = recommended_hotels.iloc[i + j]
                 with col:   
                     st.write(hotel['Hotel_Name']) 
-                    st.write('Điểm số gợi ý: ', hotel['Similarity_Score'])   
+                    st.write('Điểm số gợi ý: ', hotel['EstimateScore'])   
                     expander = st.expander(f"Mô tả khách sạn")
                     hotel_description = hotel['Hotel_Description']
                     truncated_description = ' '.join(hotel_description.split()[:100]) + '...'
