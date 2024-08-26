@@ -192,7 +192,10 @@ if choice == 'Business Objective':
     st.write("""###### Bài toán 1: Đề xuất Người dùng với Content-based Filtering: Sử dụng các đặc điểm trong mô tả của khách sạn để đưa ra các gợi ý phù hợp với sở thích cá nhân của người dùng.""")
     st.write("""###### Bài toán 2: Đề xuất Người dùng với Collaborative Filtering: Hệ thống sẽ đề xuất khách sạn dựa trên các đánh giá và hành vi của những người dùng khác có sở thích tương tự.""")
     st.image("hotel.jpg")
-    st.write("""###### Học viên: Mai Huỳnh Công Luật""")
+    st.write("""###### Học viên: 
+    1. Phan Quang Huy  
+    2. Mai Huỳnh Công Luật
+    """)
 
 elif choice == 'Build Project':
     st.subheader("Build Project")
@@ -379,7 +382,7 @@ elif choice == 'Content-based prediction':
                     st.subheader("Gợi Ý Khách Sạn:")
 
                     # hiển thị
-                    display_recommended_hotels(recommendations)
+                    display_recommended_hotels(recommendations, cols=3)
                 else:
                     st.write("Không tìm thấy gợi ý nào phù hợp.")
 elif choice == 'Collaborative Prediction':
