@@ -372,7 +372,7 @@ elif choice == 'Content-based prediction':
             if user_input.strip() == "":
                 st.warning("Vui lòng nhập mô tả khách sạn.")
             else:
-                recommendations = get_recommendations_cosine_from_searching(user_input, hotel_info, vectorizer, tfidf_matrix, stop_words, wrong_words,num_recommendations=4)
+                recommendations = get_recommendations_cosine_from_searching(user_input, df_hotels, vectorizer, tfidf_matrix, stop_words, wrong_words, num_recommendations=3)
 
                 # Kiểm tra nếu có gợi ý
                 if not recommendations.empty:
