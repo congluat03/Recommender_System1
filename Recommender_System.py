@@ -303,11 +303,11 @@ elif choice == 'Content-based prediction':
             else:
                 st.write(f"Không tìm thấy khách sạn với ID: {st.session_state.selected_hotel_id}")
     elif search_method == "Tìm Theo Nội Dung":
-        user_input = st.text_area("Bạn muốn tìm khách sạn theo đặc điểm nào? (Vị trí, tiện nghi, giá cả,...):", "")
+        user_input = st.text_area("Tiềm kiếm khách sạn theo nội dung mô tả", "")
         st.write("Dưới đây là một số câu gợi ý:")
-        st.markdown('<span style="opacity:0.5;">Ví dụ: khách sạn gần trung tâm thành phố, khách sạn ở khu vực yên tĩnh....</span>', unsafe_allow_html=True)
+        st.markdown('<span style="opacity:0.5;">Ví dụ: Khách sạn gần bờ biển, trung tâm mua sắm. Phòng phù hợp cho hai người trở lên ở cùng nhau.....</span>', unsafe_allow_html=True)
 
-        if st.button("Nhận Gợi Ý"):
+        if st.button("Gợi Ý khách sạn"):
             if user_input.strip() == "":
                 st.warning("Vui lòng nhập mô tả khách sạn.")
             else:
