@@ -302,6 +302,25 @@ elif choice == 'Content-based prediction':
                 display_recommended_hotels(recommendations, cols=3)
             else:
                 st.write(f"Không tìm thấy khách sạn với ID: {st.session_state.selected_hotel_id}")
+    elif search_method == "Tìm Theo Nội Dung":
+        user_input = st.text_area("Bạn muốn tìm khách sạn theo đặc điểm nào? (Vị trí, tiện nghi, giá cả,...):", "")
+        st.write("Dưới đây là một số câu gợi ý:")
+        st.markdown('<span style="opacity:0.5;">Ví dụ: khách sạn gần trung tâm thành phố, khách sạn ở khu vực yên tĩnh....</span>', unsafe_allow_html=True)
+
+        if st.button("Nhận Gợi Ý"):
+            if user_input.strip() == "":
+                st.warning("Vui lòng nhập mô tả khách sạn.")
+            else:
+                # recommendations = get_recommendations_cosine_from_searching(user_input, hotel_info, vectorizer, tfidf_matrix, stop_words, wrong_words,num_recommendations=4)
+
+                # Kiểm tra nếu có gợi ý
+                if not recommendations.empty:
+                    st.subheader("Gợi Ý Khách Sạn:")
+
+                    # hiển thị
+                    # display_recommended_hotels(recommendations)
+                else:
+                    st.write("Không tìm thấy gợi ý nào phù hợp.")
 elif choice == 'Collaborative Prediction':
     st.subheader("Collaborative Prediction")
     # Lấy người dùng
