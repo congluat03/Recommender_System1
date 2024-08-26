@@ -6,11 +6,13 @@ import pickle
 import matplotlib.pyplot as plt
 from sklearn import metrics
 import seaborn as sns
+from sklearn.metrics.pairwise import cosine_similarity
+from underthesea import word_tokenize, pos_tag, sent_tokenize
+from sklearn.feature_extraction.text import TfidfVectorizer
+import re
 from surprise import Reader, Dataset
-from surprise.model_selection import train_test_split
-from surprise.model_selection import cross_validate
-from surprise import SVD
-from surprise import accuracy
+from surprise.model_selection import train_test_split, cross_validate
+from surprise import SVD, accuracy
 import io
 from wordcloud import WordCloud
 
@@ -54,7 +56,48 @@ def display_recommended_hotels(recommended_hotels, cols=5):
                     hotel_description = hotel['Hotel_Description']
                     truncated_description = ' '.join(hotel_description.split()[:100]) + '...'
                     expander.write(truncated_description)
-                    expander.markdown("Nhấn vào mũi tên để đóng hộp text này.")           
+                    expander.markdown("Nhấn vào mũi tên để đóng hộp text này.") 
+def preprocess_text(text, stop_words, wrong_words):
+    # Chuyển thành chữ thường
+    text = text.lower()
+
+    # Loại bỏ ký tự số và ký tự đặc biệt
+    text = re.sub(r'[0-9]', '', text)  # Loại bỏ số
+    text = re.sub(r'[^\w\s]', '', text)  # Loại bỏ ký tự đặc biệt (ngoài chữ cái và khoảng trắng)
+
+    # Loại bỏ khoảng trắng dư thừa
+    text = ' '.join(text.split())
+
+    # Token hóa chuỗi
+    tokens = word_tokenize(text)
+
+    # Loại bỏ stop words và wrong words
+    tokens = [t for t in tokens if t not in stop_words and t not in wrong_words]
+
+    return ' '.join(tokens)  # Chuyển đổi danh sách token trở lại thành chuỗi
+def get_recommendations_cosine_from_searching(user_input, hotel_info, vectorizer, tfidf_matrix, stop_words, wrong_words, num_recommendations=5):
+    # Tiền xử lý văn bản người dùng
+    user_text = preprocess_text(user_input, stop_words, wrong_words)
+    # Chuyển đổi chuỗi văn bản của người dùng thành TF-IDF vector
+    user_tfidf = vectorizer.transform([user_text])
+    # Tính toán độ tương tự giữa chuỗi văn bản của người dùng và tất cả các khách sạn
+    user_cosine_sim = cosine_similarity(user_tfidf, tfidf_matrix).flatten()
+    # Tạo ma trận tương đồng cosine cho từng khách sạn
+    sim_scores = list(enumerate(user_cosine_sim))
+    # Sắp xếp độ tương tự giảm dần
+    sim_scores = sorted(sim_scores, key=lambda x: x[1], reverse=True)
+    # Lấy top 5 khách sạn tương tự nhất
+    sim_scores = sim_scores[:num_recommendations]
+
+    # Get the hotel indices
+    hotel_indices = [i[0] for i in sim_scores]
+    recommended_hotels = df.iloc[hotel_indices].copy()
+
+    # Add a new column 'Score' to the DataFrame to include the rating score
+    recommended_hotels['EstimateScore'] = [sim[1] for sim in sim_scores]
+    # Return the top n most similar hotels as a DataFrame
+    return recommended_hotels
+    
 def surprise_Recommender(New_ID, date, Model, num):
     New_ID_idx = date.loc[date['New_ID'] == New_ID, 'New_ID_idx'].iloc[0] 
     df_score = date[["Hotel_ID_idx", 'Hotel_ID']]
@@ -88,7 +131,25 @@ def plot_barplot(results_df):
 # Đọc dữ liệu khách sạn
 df_hotels = pd.read_csv('hotel_info_VI.csv')
 df_hotels_comments = pd.read_csv('hotel_comments_ID_Encoder.csv')
+#Hàm làm sạch dữu liệu
+STOP_WORD_FILE = 'vietnamese-stopwords.txt'
+WRONG_WORD_FILE = 'wrong-word.txt'
 
+# Đọc danh sách từ dừng
+with open(STOP_WORD_FILE, 'r', encoding='utf-8') as file:
+    stop_words = file.read().split('\n')
+
+# Đọc danh sách từ sai
+with open(WRONG_WORD_FILE, 'r', encoding='utf-8') as file:
+    wrong_words = file.read().split('\n')
+# Tải vectorizer
+with open('vectorizer.pkl', 'rb') as f:
+    vectorizer = pickle.load(f)
+
+# Tải tfidf_matrix
+with open('tfidf_matrix.pkl', 'rb') as f:
+    tfidf_matrix = pickle.load(f)
+    
 def plot_cosine_similarity_matrix(cosine_sim, labels):
     # Tạo một đối tượng BytesIO để lưu biểu đồ
     buf = io.BytesIO()
