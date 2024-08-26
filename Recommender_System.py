@@ -51,7 +51,12 @@ def display_recommended_hotels(recommended_hotels, cols=5):
                 hotel = recommended_hotels.iloc[i + j]
                 with col:   
                     st.write(hotel['Hotel_Name']) 
-                    st.write('Điểm số gợi ý: ', hotel['EstimateScore'])   
+                    st.write('Điểm số gợi ý: ', hotel['EstimateScore'])
+                    st.write('##### Thông tin:')
+                    st.write('Địa chỉ:  ', hotel['Hotel_Address'].values[0])
+                    st.write('Rank:  ', (hotel['Hotel_Rank'].values[0]).replace(' sao trên ', '/'))
+                    st.write('Điểm đánh giá trung bình:  ', hotel['Total_Score'].values[0])
+                    st.write('Số lượng đánh giá:  ', hotel['comments_count'].values[0])
                     expander = st.expander(f"Mô tả khách sạn")
                     hotel_description = hotel['Hotel_Description']
                     truncated_description = ' '.join(hotel_description.split()[:100]) + '...'
