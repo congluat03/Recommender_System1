@@ -229,7 +229,7 @@ elif choice == 'Build Project':
     st.write("#### Phân phối khách sạn theo phường")
     # Tạo và hiển thị biểu đồ
     plot_ward_distribution(ward_counts)
-    st.write("##### 3. Build model...")
+    st.write("##### 3. Build model Cosine Similarity")
     st.write("##### 4. Evaluation")
     
     st.subheader("Cosine Similarity Matrix")
@@ -283,7 +283,7 @@ elif choice == 'Build Project':
     plt.ylabel('Number of Ratings')
     st.pyplot(plt)
     
-    st.write("##### 3. Build model...")
+    st.write("##### 3. Build model SVD Surprise")
     st.write("##### 4. Evaluation") 
     
     results = cross_validate(SVD_Surprise, data, measures=['RMSE', 'MAE'], cv=5, return_train_measures=True, verbose=True)
@@ -324,7 +324,7 @@ elif choice == 'Content-based prediction':
             cosine_sim_new = pickle.load(f)
         
         ###### Giao diện Streamlit ######
-        st.image('hotel.jpg', use_column_width=True)
+
         
         # Kiểm tra xem 'selected_hotel_id' đã có trong session_state hay chưa
         if 'selected_hotel_id' not in st.session_state:
