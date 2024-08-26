@@ -357,6 +357,7 @@ elif choice == 'Content-based prediction':
                 st.write('Địa chỉ:  ', selected_hotel['Hotel_Address'].values[0])
                 st.write('Rank:  ', (selected_hotel['Hotel_Rank'].values[0]).replace(' sao trên ', '/'))
                 st.write('Điểm đánh giá trung bình:  ', selected_hotel['Total_Score'].values[0])
+                st.write('Số lượng đánh giá:  ', selected_hotel['comments_count'].values[0])
                 st.write('Mô tả khách sạn: ')
                 st.write(truncated_description, '...')
             
