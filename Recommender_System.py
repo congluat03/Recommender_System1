@@ -379,7 +379,7 @@ elif choice == 'Content-based prediction':
                     st.subheader("Gợi Ý Khách Sạn:")
 
                     # hiển thị
-                    # display_recommended_hotels(recommendations)
+                    display_recommended_hotels(recommendations)
                 else:
                     st.write("Không tìm thấy gợi ý nào phù hợp.")
 elif choice == 'Collaborative Prediction':
