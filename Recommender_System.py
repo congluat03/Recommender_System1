@@ -91,7 +91,7 @@ def get_recommendations_cosine_from_searching(user_input, hotel_info, vectorizer
 
     # Get the hotel indices
     hotel_indices = [i[0] for i in sim_scores]
-    recommended_hotels = df.iloc[hotel_indices].copy()
+    recommended_hotels = hotel_info.iloc[hotel_indices].copy()
 
     # Add a new column 'Score' to the DataFrame to include the rating score
     recommended_hotels['EstimateScore'] = [sim[1] for sim in sim_scores]
