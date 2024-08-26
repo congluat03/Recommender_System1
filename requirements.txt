@@ -6,3 +6,4 @@ scikit-learn
 numpy==1.21.6
 scikit-surprise
 WordCloud
+underthesea
